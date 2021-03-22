@@ -22,7 +22,7 @@ module Poker where
         in (map int2Card hand)
 
     -- 3. evaluate hand
-    evalHand hand =
+    -- evalHand hand =
 
 
     -- ! EVALHAND HELPERS ! ------------
