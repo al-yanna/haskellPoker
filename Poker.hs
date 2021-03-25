@@ -7,6 +7,8 @@ module Poker where
     flush = [41, 44, 47, 48, 50, 10, 9]
     fourkind::[Int]
     fourkind = [40, 41, 27, 28, 1,  14, 15, 42, 29] -- 4 aces wins
+    fullHouse::[Int]
+    fullHouse = [ 17, 39, 30, 52, 44, 25, 41, 51, 12 ] -- Q-full-of-K wins but need to implement tiebreaker, else Q-full-of-4 wins 
 
     deal :: [Int] -> [[Char]]
     deal hand = 
@@ -38,6 +40,7 @@ module Poker where
         -- 3. four of a kind
         if ((length $ largestList $ group $ sortRank $ convertHand hand) == 4) then (3, largestList $ group $ sortRank $ convertHand hand)
         -- 4. full house
+        else if ((length $ secondLargest $ group $ reverseRank $ convertHand hand) == 5) then (4, secondLargest $ group $ reverseRank $ convertHand hand) 
         -- 5. flush 
         else if ((length $ sameSuit hand) == 5) then (5, sameSuit hand)
         -- 6. straight
@@ -57,6 +60,7 @@ module Poker where
             largestSuit = largestList $ splitSuits $ convertHand hand
         in dropTo5 largestSuit
 
+    sameRank [[
     group [] = []
     group (x:xs) = group_loop [x] x xs
         where
@@ -97,3 +101,14 @@ module Poker where
     largestList :: [[[Char]]] -> [[Char]]
     largestList [] = []
     largestList (x:xs) = let l = largestList xs in if length l > length x then l else x
+
+    -- Parts Added
+    secondLargest :: [[[Char]]] -> [[Char]]
+    secondLargest hand = 
+        let s = filter (/= largestList hand) hand
+            l = largestList hand
+        in l ++ largestList s 
+
+    reverseRank :: [[Char]] -> [[Char]]
+    reverseRank [] = []
+    reverseRank (x:xs) = reverseRank [y | y <- xs, getRank y > getRank x] ++ [x] ++ reverseRank [y | y <- xs, getRank y <= getRank x]
