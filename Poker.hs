@@ -1,4 +1,18 @@
 module Poker where
+    -- TO DO: 
+    --  1. isStraight 
+    --      check for:
+    --      1a. low ace straight (A2345) - lowest possible straight
+    --      2a. high ace straight (10JQKA) - highest possible straight
+    --  2. tieBreaker
+    --      2a. containsAce = winner
+    --      2b. compare getRank of highestCard of players
+    --      2c. full house and two pair cases when we have to compare the
+    --          second largest list in case largest lists are the same
+    --          ex. Q-full-of-K vs Q-full-of-4 wins 
+    --  3. fullhouse and two pair case when 2 equal length groups, 
+    --     and one are aces, that group is in the playing hand
+
     hand::[Int]
     hand = [27, 45, 3,  48, 44, 43, 41, 33, 12] -- flush wins
     royal::[Int]
@@ -16,9 +30,18 @@ module Poker where
             p2 = snd $ evalHand $ snd $ shuf hand
             p1Rank = fst $ evalHand $ fst $ shuf hand
             p2Rank = fst $ evalHand $ snd $ shuf hand
-        in  if p1Rank /= p2Rank then if p1Rank < p2Rank then p1 else p2
-            else p1 -- change to tiebreaker winner when implemented
-        
+        in  
+        if p1Rank /= p2Rank then if p1Rank < p2Rank then p1 else p2
+        else if tieBreaker (p1,p2) then p1 else p2
+  
+    tieBreaker :: ([[Char]], [[Char]]) -> Bool
+    tieBreaker hands =
+        let s = (containsAce $ map getRank $ fst hands, containsAce $ map getRank $ snd hands)
+        in  if (fst s && not (snd s)) then True
+            else if (not (fst s) && snd s) then False
+            else if (map getRank $ highestCard $ map getRank $ fst hands) > (map getRank $ highestCard $ map getRank $ snd hands) then True
+            else False
+
     shuf :: [Int] -> ([Int], [Int])
     shuf hand = 
         let sharePool = drop (length hand - 5) hand
@@ -38,43 +61,35 @@ module Poker where
         -- 2. straight flush
         -- if (length $ sameSuit $ isStraight hand) == 5 then (2, sameSuit hand) 
         -- 3. four of a kind
-        if ((length $ largestList $ group $ sortRank $ convertHand hand) == 4) then (3, largestList $ group $ sortRank $ convertHand hand)
-        -- 4. full house
-        else if ((length $ secondLargest $ group $ reverseRank $ convertHand hand) == 5) then (4, secondLargest $ group $ reverseRank $ convertHand hand) 
+        if ((length $ largestList $ sameRank hand) == 4) then (3, largestList $ sameRank hand) 
+        -- 4. full house  
+        else if ((length $ twoLargest $ sameRank hand) == 5) then (4, twoLargest $ sameRank hand)
         -- 5. flush 
         else if ((length $ sameSuit hand) == 5) then (5, sameSuit hand)
         -- 6. straight
         -- if ((length $ isStraight hand) == 5 then (6, isStraight hand) 
         -- 7. 3 of a kind
-        else if ((length $ largestList $ group $ sortRank $ convertHand hand) == 3) then (7, largestList $ group $ sortRank $ convertHand hand)
-        -- 8. two pair
-        -- 9. pair
-        else if ((length $ largestList $ group $ sortRank $ convertHand hand) == 2) then (9, largestList $ group $ sortRank $ convertHand hand)
+        else if ((length $ largestList $ sameRank hand) == 3) then (7, largestList $ sameRank hand) 
+        -- 7. 3 of a kind
+        else if ((length $ twoLargest $ sameRank hand) == 4) then (8, twoLargest $ sameRank hand) 
+         -- 9. pair
+        else if ((length $ largestList $ sameRank hand) == 2) then (9, largestList $ sameRank hand)
         -- 10. high card
-        else (10, highestCard hand)
+        else (10, highestCard hand) 
  
-    -- helper functions ------------
+    -- helper functions -------------------------------------------------
+
+    -- isStraight :: [Int] -> [[Char]]
+
     sameSuit :: [Int] -> [[Char]]
     sameSuit hand =
         let splitSuits hand = [filter isHeart hand, filter isDiamond hand, filter isClub hand, filter isSpade hand]
             largestSuit = largestList $ splitSuits $ convertHand hand
         in dropTo5 largestSuit
 
-    sameRank [[
-    group [] = []
-    group (x:xs) = group_loop [x] x xs
-        where
-        group_loop acc c [] = [acc]
-        group_loop acc c (y:ys) 
-         | getRank y == getRank c = group_loop (acc ++ [y]) c ys
-         | otherwise = acc : group_loop [y] y ys
+    sameRank :: [Int] -> [[[Char]]]
+    sameRank hand = group $ reverseRank $ convertHand hand
 
-    sortRank :: [[Char]] -> [[Char]]
-    sortRank [] = []
-    sortRank (x:xs) = sortRank [y | y <- xs, getRank y <= getRank x] ++ [x] ++ sortRank [y | y <- xs, getRank y > getRank x]
-
-    -- isStraight :: [Int] -> [[Char]]
-    
     containsAce :: [Int] -> Bool
     containsAce hand = 
         let find ace [] = False
@@ -87,7 +102,8 @@ module Poker where
         if containsAce hand then take 1 (sortRank $ convertHand hand)
         else drop ((length hand)-1) (sortRank $ convertHand hand)
 
-    -- helpers for the helper functions lol ------------
+    -- other functions -------------------------------------------------
+
     getSuit card = card!!(length card - 1)
     getRank card = let toInt tmp = read tmp::Int in if length card == 3 then toInt $ take 2 card else toInt $ take 1 card
     isHeart card = getSuit card == 'H'
@@ -98,16 +114,27 @@ module Poker where
     dropTo5 :: [[Char]] -> [[Char]]
     dropTo5 list = if length list == 7 then drop 2 list else if length list == 6 then drop 1 list else list
 
+    group [] = []
+    group (x:xs) = group_loop [x] x xs
+        where
+        group_loop acc c [] = [acc]
+        group_loop acc c (y:ys) 
+         | getRank y == getRank c = group_loop (acc ++ [y]) c ys
+         | otherwise = acc : group_loop [y] y ys
+
     largestList :: [[[Char]]] -> [[Char]]
     largestList [] = []
     largestList (x:xs) = let l = largestList xs in if length l > length x then l else x
 
-    -- Parts Added
-    secondLargest :: [[[Char]]] -> [[Char]]
-    secondLargest hand = 
+    twoLargest :: [[[Char]]] -> [[Char]]
+    twoLargest hand = 
         let s = filter (/= largestList hand) hand
             l = largestList hand
         in l ++ largestList s 
+
+    sortRank :: [[Char]] -> [[Char]]
+    sortRank [] = []
+    sortRank (x:xs) = sortRank [y | y <- xs, getRank y <= getRank x] ++ [x] ++ sortRank [y | y <- xs, getRank y > getRank x]
 
     reverseRank :: [[Char]] -> [[Char]]
     reverseRank [] = []
