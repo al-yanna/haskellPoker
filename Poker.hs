@@ -4,14 +4,6 @@ module Poker where
     --      check for:
     --      1a. low ace straight (A2345) - lowest possible straight
     --      2a. high ace straight (10JQKA) - highest possible straight
-    --  2. tieBreaker
-    --      2a. containsAce = winner
-    --      2b. compare getRank of highestCard of players
-    --      2c. full house and two pair cases when we have to compare the
-    --          second largest list in case largest lists are the same
-    --          ex. Q-full-of-K vs Q-full-of-4 wins 
-    --  3. fullhouse and two pair case when 2 equal length groups, 
-    --     and one are aces, that group is in the playing hand
 
     hand::[Int]
     hand = [27, 45, 3,  48, 44, 43, 41, 33, 12] -- flush wins
@@ -22,7 +14,16 @@ module Poker where
     fourkind::[Int]
     fourkind = [40, 41, 27, 28, 1,  14, 15, 42, 29] -- 4 aces wins
     fullHouse::[Int]
-    fullHouse = [ 17, 39, 30, 52, 44, 25, 41, 51, 12 ] -- Q-full-of-K wins but need to implement tiebreaker, else Q-full-of-4 wins 
+    fullHouse = [ 17, 39, 30, 52, 44, 25, 41, 51, 12 ] 
+    fullHouse1::[Int]
+    fullHouse1 = [ 1, 5, 14, 5, 47, 25, 41, 51, 12 ] -- 12 12 12 4 4 vs 12 12 12 5 5 
+    twoPair :: [Int]
+    twoPair = [ 1, 7, 1, 7, 39, 28, 21, 48, 52 ] -- 1 1 13 13 vs 7 7 13 13
+    twoPair1 :: [Int]
+    twoPair1 = [ 12, 11, 8, 7, 25, 24, 20, 48, 21 ] -- 12 12 8 8 vs 11 11 7 7
+    straight :: [Int]
+    straight = [ 11, 25, 9,  39, 50, 48, 3,  49, 45 ]
+
 
     deal :: [Int] -> [[Char]]
     deal hand = 
@@ -32,14 +33,19 @@ module Poker where
             p2Rank = fst $ evalHand $ snd $ shuf hand
         in  
         if p1Rank /= p2Rank then if p1Rank < p2Rank then p1 else p2
-        else if tieBreaker (p1,p2) then p1 else p2
+        else if tieBreaker (p1, p2) then p1 else p2
   
     tieBreaker :: ([[Char]], [[Char]]) -> Bool
     tieBreaker hands =
-        let s = (containsAce $ map getRank $ fst hands, containsAce $ map getRank $ snd hands)
-        in  if (fst s && not (snd s)) then True
-            else if (not (fst s) && snd s) then False
-            else if (map getRank $ highestCard $ map getRank $ fst hands) > (map getRank $ highestCard $ map getRank $ snd hands) then True
+        let ace = (containsAce $ map getRank $ fst hands, containsAce $ map getRank $ snd hands)
+            highestRank = (map getRank $ highestCard $ map getRank $ fst hands, map getRank $ highestCard $ map getRank $ snd hands)
+            secondHighest = (map getRank $ highestCard $ filter (<((fst highestRank)!!0)) $ map getRank $ fst hands, map getRank $ highestCard $ filter (<((snd highestRank)!!0)) $ map getRank $ snd hands)
+
+        in  if (fst ace && not (snd ace)) then True
+            else if (not (fst ace) && snd ace) then False
+            else if (fst highestRank) > (snd highestRank) then True
+            else if (fst highestRank) < (snd highestRank) then False
+            else if (fst secondHighest) > (snd secondHighest) then True
             else False
 
     shuf :: [Int] -> ([Int], [Int])
@@ -70,7 +76,7 @@ module Poker where
         -- if ((length $ isStraight hand) == 5 then (6, isStraight hand) 
         -- 7. 3 of a kind
         else if ((length $ largestList $ sameRank hand) == 3) then (7, largestList $ sameRank hand) 
-        -- 7. 3 of a kind
+        -- 8. Two Pair
         else if ((length $ twoLargest $ sameRank hand) == 4) then (8, twoLargest $ sameRank hand) 
          -- 9. pair
         else if ((length $ largestList $ sameRank hand) == 2) then (9, largestList $ sameRank hand)
@@ -80,7 +86,18 @@ module Poker where
     -- helper functions -------------------------------------------------
 
     -- isStraight :: [Int] -> [[Char]]
+    -- 1. remove duplicates
+    -- 2. find straight
 
+    -- note: removes only duplicates integers for now, 
+    -- implement duplicate ranks soon
+    remDuplicates :: [Int] -> [Int]
+    remDuplicates = rdHelper []
+        where rdHelper seen [] = seen   
+              rdHelper seen (x:xs)
+               | x `elem` seen = rdHelper seen xs
+               | otherwise = rdHelper (seen ++ [x]) xs
+            
     sameSuit :: [Int] -> [[Char]]
     sameSuit hand =
         let splitSuits hand = [filter isHeart hand, filter isDiamond hand, filter isClub hand, filter isSpade hand]
@@ -139,3 +156,11 @@ module Poker where
     reverseRank :: [[Char]] -> [[Char]]
     reverseRank [] = []
     reverseRank (x:xs) = reverseRank [y | y <- xs, getRank y > getRank x] ++ [x] ++ reverseRank [y | y <- xs, getRank y <= getRank x]
+
+    -- Made some unique thing for checking isStraight
+    -- console: sortRank $ uniqueRank [] [] $ convertHand straight
+    uniqueRank x y [] = x 
+    uniqueRank x y (a:xs) = 
+              if length a == 2 
+              then if (take 1 a) `elem` y then uniqueRank x y xs else uniqueRank (a:x) (take 1 a:y) xs
+              else if (take 2 a) `elem` y then uniqueRank x y xs else uniqueRank (a:x) (take 2 a:y) xs
