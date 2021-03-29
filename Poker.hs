@@ -7,6 +7,8 @@ module Poker where
 
     hand::[Int]
     hand = [27, 45, 3,  48, 44, 43, 41, 33, 12] -- flush wins
+    royalFlush :: [Int]
+    royalFlush = [ 40, 41, 42, 43, 48, 49, 50, 51, 52 ]
     royal::[Int]
     royal = [1, 10, 11, 12, 13] 
     flush::[Int]
@@ -23,8 +25,7 @@ module Poker where
     twoPair1 = [ 12, 11, 8, 7, 25, 24, 20, 48, 21 ] -- 12 12 8 8 vs 11 11 7 7
     straight :: [Int]
     straight = [ 11, 25, 9,  39, 50, 48, 3,  49, 45 ]
-
-
+    
     deal :: [Int] -> [[Char]]
     deal hand = 
         let p1 = snd $ evalHand $ fst $ shuf hand
@@ -40,7 +41,6 @@ module Poker where
         let ace = (containsAce $ map getRank $ fst hands, containsAce $ map getRank $ snd hands)
             highestRank = (map getRank $ highestCard $ map getRank $ fst hands, map getRank $ highestCard $ map getRank $ snd hands)
             secondHighest = (map getRank $ highestCard $ filter (<((fst highestRank)!!0)) $ map getRank $ fst hands, map getRank $ highestCard $ filter (<((snd highestRank)!!0)) $ map getRank $ snd hands)
-
         in  if (fst ace && not (snd ace)) then True
             else if (not (fst ace) && snd ace) then False
             else if (fst highestRank) > (snd highestRank) then True
@@ -86,17 +86,15 @@ module Poker where
     -- helper functions -------------------------------------------------
 
     -- isStraight :: [Int] -> [[Char]]
-    -- 1. remove duplicates
-    -- 2. find straight
-
-    -- note: removes only duplicates integers for now, 
-    -- implement duplicate ranks soon
-    remDuplicates :: [Int] -> [Int]
-    remDuplicates = rdHelper []
-        where rdHelper seen [] = seen   
-              rdHelper seen (x:xs)
-               | x `elem` seen = rdHelper seen xs
-               | otherwise = rdHelper (seen ++ [x]) xs
+    -- 1. remove duplicates (done)
+    -- 2. sort w/o duplicates (done)
+    -- 3. check for 10 11 12 13 1, return straight ace
+    -- 4. else return straight
+    isStraight :: [Int] -> [[Char]]
+    isStraight hand =
+        let remDuplicates hand = map head $ group $ reverseRank $ convertHand hand
+            noDuplicates =  remDuplicates hand
+        in  noDuplicates -- temporary return
             
     sameSuit :: [Int] -> [[Char]]
     sameSuit hand =
@@ -129,7 +127,8 @@ module Poker where
     isSpade card = getSuit card == 'S'
 
     dropTo5 :: [[Char]] -> [[Char]]
-    dropTo5 list = if length list == 7 then drop 2 list else if length list == 6 then drop 1 list else list
+    dropTo5 list = 
+            if length list == 7 then drop 2 list else if length list == 6 then drop 1 list else list
 
     group [] = []
     group (x:xs) = group_loop [x] x xs
@@ -161,6 +160,8 @@ module Poker where
     -- console: sortRank $ uniqueRank [] [] $ convertHand straight
     uniqueRank x y [] = x 
     uniqueRank x y (a:xs) = 
-              if length a == 2 
-              then if (take 1 a) `elem` y then uniqueRank x y xs else uniqueRank (a:x) (take 1 a:y) xs
-              else if (take 2 a) `elem` y then uniqueRank x y xs else uniqueRank (a:x) (take 2 a:y) xs
+        if length a == 2 then 
+            if (take 1 a) `elem` y then uniqueRank x y xs 
+            else uniqueRank (a:x) (take 1 a:y) xs
+        else if (take 2 a) `elem` y then uniqueRank x y xs 
+        else uniqueRank (a:x) (take 2 a:y) xs
