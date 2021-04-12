@@ -156,3 +156,13 @@ module Poker where
     reverseRank :: [[Char]] -> [[Char]]
     reverseRank [] = []
     reverseRank (x:xs) = reverseRank [y | y <- xs, getRank y > getRank x] ++ [x] ++ reverseRank [y | y <- xs, getRank y <= getRank x]
+
+    -- Made some unique thing for checking isStraight
+    -- console: sortRank $ uniqueRank [] [] $ convertHand straight
+    uniqueRank x y [] = x 
+    uniqueRank x y (a:xs) = 
+        if length a == 2 then 
+            if (take 1 a) `elem` y then uniqueRank x y xs 
+            else uniqueRank (a:x) (take 1 a:y) xs
+        else if (take 2 a) `elem` y then uniqueRank x y xs 
+        else uniqueRank (a:x) (take 2 a:y) xs
