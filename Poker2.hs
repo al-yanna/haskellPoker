@@ -102,7 +102,6 @@ module Poker where
         
             then highestCard hand ++ (take 4 $ reverseRank $ largestList $ groupConsecutive noDuplicates) 
         else take 5 $ reverseRank $ largestList $ groupConsecutive noDuplicates 
-        -- take 5 $ sortRank $ largestList $ groupConsecutive noDuplicates
             
     sameSuit :: [Int] -> [[Char]]
     sameSuit hand =

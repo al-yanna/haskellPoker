@@ -77,7 +77,7 @@ module Poker where
         -- 5. flush 
         else if ((length $ sameSuit hand) == 5) then (5, sameSuit hand)
         -- 6. straight
-        else if ((length $ isStraight hand) == 5) then (6, isStraight hand) 
+        else if ((length $ isStraight hand) == 5) then (6, isStraight hand)
         -- 7. 3 of a kind
         else if ((length $ largestList $ sameRank hand) == 3) then (7, largestList $ sameRank hand) 
         -- 8. Two Pair
@@ -140,7 +140,6 @@ module Poker where
     groupConsecutive :: [[Char]] -> [[[Char]]]
     groupConsecutive = foldr group []
         where
-        
             group x [] = [[x]]
             group x acc@((h:t):rest)
                 | getRank x - getRank h <= 1 = (x:h:t):rest
