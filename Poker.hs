@@ -1,7 +1,7 @@
 module Poker where
 
     hand::[Int]
-    hand = [27, 45, 3,  48, 44, 43, 41, 33, 12] -- flush wins
+    hand = [27, 45, 3,  48, 44, 43, 41, 33, 12] 
     royalFlush :: [Int]
     royalFlush = [ 40, 41, 42, 43, 48, 49, 50, 51, 52 ]
     royal::[Int]
@@ -9,7 +9,7 @@ module Poker where
     flush::[Int]
     flush = [41, 44, 47, 48, 50, 10, 9]
     fourkind::[Int]
-    fourkind = [40, 41, 27, 28, 1,  14, 15, 42, 29] -- 4 aces wins
+    fourkind = [40, 41, 27, 28, 1,  14, 15, 42, 29]
     fullHouse::[Int]
     fullHouse = [ 17, 39, 30, 52, 44, 25, 41, 51, 12 ] 
     fullHouse1::[Int]
@@ -35,6 +35,10 @@ module Poker where
         if p1Rank /= p2Rank then if p1Rank < p2Rank then p1 else p2
         else if p1Rank == 2 || p1Rank == 6 then
             if (getRank $ head p1) > (getRank $ head p2) then p1 else p2
+            -- ^ can lead to high ace straight losing tie breaker
+            -- deal [1,9,29,33,23,37,51,52] 
+            -- => expected: ["1C","13S","12S","11H","10D"]
+            -- => actual: ["13S","12S","11H","10D","9C"]
         else if p1Rank == 5 then  
             if getRank (head $ sortRank p1) > getRank (head $ sortRank p2) then p1 else p2
         else if tieBreaker (p1, p2) then p1 else p2
@@ -44,7 +48,7 @@ module Poker where
         let ace = (containsAce $ map getRank $ fst hands, containsAce $ map getRank $ snd hands)
             highestRank = (map getRank $ highestCard $ map getRank $ fst hands, map getRank $ highestCard $ map getRank $ snd hands)
             secondHighest = (map getRank $ highestCard $ filter (<((fst highestRank)!!0)) $ map getRank $ fst hands, map getRank $ highestCard $ filter (<((snd highestRank)!!0)) $ map getRank $ snd hands)
-        in  if (fst ace && not (snd ace)) then True
+        in  if (fst ace && not (snd ace)) then True 
             else if (not (fst ace) && snd ace) then False
             else if (fst highestRank) > (snd highestRank) then True
             else if (fst highestRank) < (snd highestRank) then False
@@ -67,7 +71,7 @@ module Poker where
     evalHand :: [Int] -> (Int, [[Char]])
     evalHand hand = 
         -- 1. royal flush
-        if (length $ isStraight hand) == 5  && (getRank $ head $ isStraight hand) == 1 then (1, isStraight hand)
+        if (length $ sameSuit $ isStraight hand) == 5  && (getRank $ head $ isStraight hand) == 1 then (1, sameSuit $ isStraight hand)
         -- 2. straight flush
         else if (length $ sameSuit $ isStraight hand) == 5 then (2, sameSuit $ isStraight hand)
         -- 3. four of a kind
@@ -143,7 +147,7 @@ module Poker where
         where
         group x [] = [[x]]
         group x acc@((h:t):hand)
-         | getRank x - getRank h <= 1 = (x:h:t):hand
+         | getRank x - getRank h == 1 = (x:h:t):hand
          | otherwise = [x]:acc
 
     largestList :: [[[Char]]] -> [[Char]]
@@ -152,13 +156,19 @@ module Poker where
 
     twoLargest :: [[[Char]]] -> [[Char]]
     twoLargest hand = 
-        let s = filter (/= largestList hand) hand
+        let s = filter (/= largestList hand) hand -- filtered reverse sorted list w/o largest
+            p = sortRank1 $ filter (/= largestList hand) hand -- filtered sorted list w/o largest
             l = largestList hand
-        in l ++ largestList s 
+        in if containsAce $ map getRank $ largestList p then l ++ largestList p
+           else l ++ largestList s 
     
     sortRank :: [[Char]] -> [[Char]]
     sortRank [] = []
     sortRank (x:xs) = sortRank [y | y <- xs, getRank y <= getRank x] ++ [x] ++ sortRank [y | y <- xs, getRank y > getRank x]
+
+    sortRank1 :: [[[Char]]] -> [[[Char]]]
+    sortRank1 [] = []
+    sortRank1 (x:xs) = sortRank1 [y | y <- xs, length y <= length x] ++ [x] ++ sortRank1 [y | y <- xs, length y > length x]
 
     reverseRank :: [[Char]] -> [[Char]]
     reverseRank [] = []
