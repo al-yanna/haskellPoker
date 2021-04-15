@@ -139,7 +139,8 @@ module Poker where
 
     groupConsecutive :: [[Char]] -> [[[Char]]]
     groupConsecutive = foldr group []
-        where 
+        where
+        
             group x [] = [[x]]
             group x acc@((h:t):rest)
                 | getRank x - getRank h <= 1 = (x:h:t):rest

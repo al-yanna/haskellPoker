@@ -6,6 +6,10 @@ Test #23 DISCREPANCY: [36,27,34,2,41,20,7,25,1]
   You returned:   ["2C","2S","7C","7D"]
   Should contain: ["1C","1H","7C","7D"]
   2 of 4 cards correct
+Test #155 DISCREPANCY: [14,6,21,23,35,19,20,18,11]
+  You returned:   ["5D","6D","7D","8D","9H"]
+  Should contain: ["1D","5D","6D","7D","8D"]
+  4 of 5 cards correct
 Test #293 DISCREPANCY: [32,28,7,14,38,29,36,16,37]
   You returned:   ["10H","11H","12H","2H","3H"]
   Should contain: ["10H","11H","12H","3H","6H"]
@@ -15,7 +19,7 @@ Test #420 DISCREPANCY: [28,14,44,29,25,38,1,19,16]
   Should contain: ["12D","12H","1C","1D"]
   2 of 4 cards correct
 Test #464 DISCREPANCY: [42,40,46,47,43,15,48,44,49]
-  You returned:   ["1S","4S","5S","8S","9S"]
+  You returned:   ["10S","4S","5S","8S","9S"]
   Should contain: ["10S","1S","5S","8S","9S"]
   4 of 5 cards correct
 Test #467 DISCREPANCY: [27,2,17,12,43,10,20,40,36]
@@ -27,7 +31,7 @@ Test #496 DISCREPANCY: [32,48,42,46,31,38,28,34,37]
   Should contain: ["11H","12H","5H","6H","8H"]
   4 of 5 cards correct
 Test #548 DISCREPANCY: [35,51,38,26,39,27,30,22,29]
-  You returned:   ["12H","1H","3H","4H","9H"]
+  You returned:   ["12H","13H","3H","4H","9H"]
   Should contain: ["12H","13H","1H","4H","9H"]
   4 of 5 cards correct
 Test #665 DISCREPANCY: [47,4,6,52,2,20,12,1,13]
@@ -38,17 +42,17 @@ Test #675 DISCREPANCY: [27,21,8,40,25,1,38,9,47]
   You returned:   ["12D","12H","8D","8S"]
   Should contain: ["12D","12H","1C","1H"]
   2 of 4 cards correct
-Test #753 DISCREPANCY: [26,42,18,52,45,43,27,51,44]
-  You returned:   ["12S","3S","4S","5S","6S"]
-  Should contain: ["12S","13S","4S","5S","6S"]
-  4 of 5 cards correct
 Test #816 DISCREPANCY: [38,13,40,31,27,33,35,19,39]
   You returned:   ["13H","1H","5H","7H","9H"]
   Should contain: ["12H","13H","1H","7H","9H"]
   4 of 5 cards correct
 Test #900 DISCREPANCY: [32,3,38,4,36,27,47,39,33]
-  You returned:   ["10H","12H","1H","6H","7H"]
+  You returned:   ["10H","12H","13H","6H","7H"]
   Should contain: ["10H","12H","13H","1H","7H"]
+  4 of 5 cards correct
+Test #966 DISCREPANCY: [34,12,33,46,36,35,45,23,39]
+  You returned:   ["10H","6S","7H","8H","9H"]
+  Should contain: ["10H","13H","7H","8H","9H"]
   4 of 5 cards correct
 Test #1024 DISCREPANCY: [24,39,23,18,27,14,49,26,5]
   You returned:   ["10D","10S","1D","1H"]
@@ -58,10 +62,14 @@ Test #1081 DISCREPANCY: [29,39,21,16,42,40,23,27,34]
   You returned:   ["1H","1S","3D","3S"]
   Should contain: ["1H","1S","8D","8H"]
   2 of 4 cards correct
+Test #1112 DISCREPANCY: [25,8,29,44,45,47,40,30,46]
+  You returned:   ["4H","5S","6S","7S","8C"]
+  Should contain: ["1S","5S","6S","7S","8S"]
+  3 of 5 cards correct
 Test #1130 DISCREPANCY: [15,44,45,14,29,52,46,43,41]
-  You returned:   ["13S","2S","4S","5S","7S"]
+  You returned:   ["1D","2S","3H","4S","5S"]
   Should contain: ["13S","2S","4S","6S","7S"]
-  4 of 5 cards correct
+  2 of 5 cards correct
 Test #1152 DISCREPANCY: [21,46,32,33,1,14,30,34,25]
   You returned:   ["1C","1D","7H","7S"]
   Should contain: ["1C","1D","8D","8H"]
@@ -75,19 +83,19 @@ Test #1243 DISCREPANCY: [6,14,50,12,27,38,5,31,42]
   Should contain: ["12C","12H","1D","1H"]
   2 of 4 cards correct
 Test #1275 DISCREPANCY: [19,41,14,38,25,16,15,17,35]
-  You returned:   ["1D","2D","3D","4D","6D"]
+  You returned:   ["12D","2D","3D","4D","6D"]
   Should contain: ["12D","1D","3D","4D","6D"]
   4 of 5 cards correct
-Test #1342 DISCREPANCY: [25,28,48,33,43,44,47,50,46]
-  You returned:   ["11S","4S","5S","7S","8S"]
-  Should contain: ["11S","5S","7S","8S","9S"]
-  4 of 5 cards correct
 Test #1346 DISCREPANCY: [41,44,22,43,49,30,52,40,45]
-  You returned:   ["10S","1S","4S","5S","6S"]
+  You returned:   ["10S","13S","1S","2S","6S"]
   Should contain: ["10S","13S","1S","5S","6S"]
   4 of 5 cards correct
+Test #1362 DISCREPANCY: [22,21,36,23,9,18,25,50,24]
+  You returned:   ["10D","11S","12D","8D","9C"]
+  Should contain: ["10D","11D","12D","5D","8D"]
+  3 of 5 cards correct
 Test #1402 DISCREPANCY: [52,46,26,29,40,31,1,5,20]
   You returned:   ["13D","13S","5C","5H"]
   Should contain: ["13D","13S","1C","1S"]
   2 of 4 cards correct
-1492.1/1500 | 99.5%
+1490.9/1500 | 99.4%
