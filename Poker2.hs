@@ -1,8 +1,5 @@
 module Poker where
 
-    -- :load Tester2.hs
-    -- runTests
-
     hand::[Int]
     hand = [27, 45, 3,  48, 44, 43, 41, 33, 12] -- flush wins
     royalFlush :: [Int]
@@ -36,7 +33,7 @@ module Poker where
             p2Rank = fst $ evalHand $ snd $ shuf hand
         in  
         if p1Rank /= p2Rank then if p1Rank < p2Rank then p1 else p2
-        else if p1Rank == 2 || p1Rank == 5 || p1Rank == 6 then
+        else if p1Rank == 2 || p1Rank == 6 then
             if (getRank $ head p1) > (getRank $ head p2) then p1
             else p2
         else if tieBreaker (p1, p2) then p1 else p2
@@ -66,14 +63,13 @@ module Poker where
             int2Card num = cards!!num 
         in (map int2Card hand)
 
-
     evalHand :: [Int] -> (Int, [[Char]])
     evalHand hand = 
         -- 1. royal flush
         if ((length $ isStraight hand) == 5  && (map getRank $ take 1 $ isStraight hand) == [1]) 
             then (1, isStraight hand)
         -- 2. straight flush
-        else if (length $ isStraight hand) == 5 && (length $ sameSuit hand) == 5 then (2, isStraight hand) -- Test #1362 fails
+        else if (length $ isStraight hand) == 5 && (length $ sameSuit hand) == 5 then (2, isStraight hand)
         -- 3. four of a kind
         else if ((length $ largestList $ sameRank hand) == 4) then (3, largestList $ sameRank hand) 
         -- 4. full house  
@@ -81,7 +77,7 @@ module Poker where
         -- 5. flush 
         else if ((length $ sameSuit hand) == 5) then (5, sameSuit hand)
         -- 6. straight
-        else if ((length $ isStraight hand) == 5) then (6, isStraight hand) 
+        else if ((length $ isStraight hand) == 5) then (6, isStraight hand)
         -- 7. 3 of a kind
         else if ((length $ largestList $ sameRank hand) == 3) then (7, largestList $ sameRank hand) 
         -- 8. Two Pair
@@ -96,18 +92,15 @@ module Poker where
     isStraight :: [Int] -> [[Char]]
     isStraight hand =
         let remDuplicates hand = map head $ groupRank $ reverseRank $ convertHand hand
-            noDuplicates =  remDuplicates hand
-        in 
-        if (take 2 ((secHighestCard hand)!!0) == "13" && containsAce hand) 
-        
-            then highestCard hand ++ (take 4 $ reverseRank $ largestList $ groupConsecutive noDuplicates) 
-        else take 5 $ reverseRank $ largestList $ groupConsecutive noDuplicates 
+            straight = reverseRank $ largestList $ groupConsecutive $ remDuplicates hand
+        in  if (take 2 ((secHighestCard $ map getRank straight)!!0) == "13" && containsAce hand) then highestCard hand ++ (take 4 straight) 
+            else take 5 straight
             
     sameSuit :: [Int] -> [[Char]]
     sameSuit hand =
         let splitSuits hand = [filter isHeart hand, filter isDiamond hand, filter isClub hand, filter isSpade hand]
             largestSuit = largestList $ splitSuits $ convertHand hand
-        in dropTo5 $ sortRank $ largestSuit
+        in take 5 $ reverseRank $ largestSuit
 
     sameRank :: [Int] -> [[[Char]]]
     sameRank hand = groupRank $ reverseRank $ convertHand hand
@@ -135,8 +128,6 @@ module Poker where
     isDiamond card = getSuit card == 'D'
     isClub card = getSuit card == 'C'
     isSpade card = getSuit card == 'S'
-    dropTo5 :: [[Char]] -> [[Char]]
-    dropTo5 list = if length list == 7 then drop 2 list else if length list == 6 then drop 1 list else list
 
     groupRank [] = []
     groupRank (x:xs) = groupLoop [x] x xs
@@ -148,7 +139,7 @@ module Poker where
 
     groupConsecutive :: [[Char]] -> [[[Char]]]
     groupConsecutive = foldr group []
-        where 
+        where
             group x [] = [[x]]
             group x acc@((h:t):rest)
                 | getRank x - getRank h <= 1 = (x:h:t):rest
@@ -161,6 +152,7 @@ module Poker where
     twoLargest :: [[[Char]]] -> [[Char]]
     twoLargest hand = 
         let s = filter (/= largestList hand) hand
+
             l = largestList hand
         in l ++ largestList s 
     

@@ -6,10 +6,6 @@ Test #23 DISCREPANCY: [36,27,34,2,41,20,7,25,1]
   You returned:   ["2C","2S","7C","7D"]
   Should contain: ["1C","1H","7C","7D"]
   2 of 4 cards correct
-Test #155 DISCREPANCY: [14,6,21,23,35,19,20,18,11]
-  You returned:   ["5D","6D","7D","8D","9H"]
-  Should contain: ["1D","5D","6D","7D","8D"]
-  4 of 5 cards correct
 Test #293 DISCREPANCY: [32,28,7,14,38,29,36,16,37]
   You returned:   ["10H","11H","12H","2H","3H"]
   Should contain: ["10H","11H","12H","3H","6H"]
@@ -50,10 +46,6 @@ Test #900 DISCREPANCY: [32,3,38,4,36,27,47,39,33]
   You returned:   ["10H","12H","13H","6H","7H"]
   Should contain: ["10H","12H","13H","1H","7H"]
   4 of 5 cards correct
-Test #966 DISCREPANCY: [34,12,33,46,36,35,45,23,39]
-  You returned:   ["10H","6S","7H","8H","9H"]
-  Should contain: ["10H","13H","7H","8H","9H"]
-  4 of 5 cards correct
 Test #1024 DISCREPANCY: [24,39,23,18,27,14,49,26,5]
   You returned:   ["10D","10S","1D","1H"]
   Should contain: ["13D","13H","1D","1H"]
@@ -62,14 +54,10 @@ Test #1081 DISCREPANCY: [29,39,21,16,42,40,23,27,34]
   You returned:   ["1H","1S","3D","3S"]
   Should contain: ["1H","1S","8D","8H"]
   2 of 4 cards correct
-Test #1112 DISCREPANCY: [25,8,29,44,45,47,40,30,46]
-  You returned:   ["4H","5S","6S","7S","8C"]
-  Should contain: ["1S","5S","6S","7S","8S"]
-  3 of 5 cards correct
 Test #1130 DISCREPANCY: [15,44,45,14,29,52,46,43,41]
-  You returned:   ["1D","2S","3H","4S","5S"]
+  You returned:   ["13S","2S","4S","5S","7S"]
   Should contain: ["13S","2S","4S","6S","7S"]
-  2 of 5 cards correct
+  4 of 5 cards correct
 Test #1152 DISCREPANCY: [21,46,32,33,1,14,30,34,25]
   You returned:   ["1C","1D","7H","7S"]
   Should contain: ["1C","1D","8D","8H"]
@@ -90,12 +78,8 @@ Test #1346 DISCREPANCY: [41,44,22,43,49,30,52,40,45]
   You returned:   ["10S","13S","1S","2S","6S"]
   Should contain: ["10S","13S","1S","5S","6S"]
   4 of 5 cards correct
-Test #1362 DISCREPANCY: [22,21,36,23,9,18,25,50,24]
-  You returned:   ["10D","11S","12D","8D","9C"]
-  Should contain: ["10D","11D","12D","5D","8D"]
-  3 of 5 cards correct
 Test #1402 DISCREPANCY: [52,46,26,29,40,31,1,5,20]
   You returned:   ["13D","13S","5C","5H"]
   Should contain: ["13D","13S","1C","1S"]
   2 of 4 cards correct
-1490.9/1500 | 99.4%
+1492.5/1500 | 99.5%
