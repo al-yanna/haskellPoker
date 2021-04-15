@@ -47,7 +47,7 @@ module Poker where
     tieBreaker hands =
         let ace = (containsAce $ map getRank $ fst hands, containsAce $ map getRank $ snd hands)
             highestRank = (map getRank $ highestCard $ map getRank $ fst hands, map getRank $ highestCard $ map getRank $ snd hands)
-            secondHighest = (map getRank $ highestCard $ filter (<((fst highestRank)!!0)) $ map getRank $ fst hands, map getRank $ highestCard $ filter (<((snd highestRank)!!0)) $ map getRank $ snd hands)
+            secondHighest = (map getRank $ highestCard $ filter (/=((fst highestRank)!!0)) $ map getRank $ fst hands, map getRank $ highestCard $ filter (/=((snd highestRank)!!0)) $ map getRank $ snd hands)
         in  if (fst ace && not (snd ace)) then True 
             else if (not (fst ace) && snd ace) then False
             else if (fst highestRank) > (snd highestRank) then True
