@@ -69,7 +69,7 @@ module Poker where
         if ((length $ isStraight hand) == 5  && (map getRank $ take 1 $ isStraight hand) == [1]) 
             then (1, isStraight hand)
         -- 2. straight flush
-        else if (length $ isStraight hand) == 5 && (length $ isStraight $ map getRank $ sameSuit hand) == 5 then (2, isStraight hand)
+        else if (length $ isStraight hand) == 5 && (length $ sameSuit hand) == 5 then (2, isStraight hand)
         -- 3. four of a kind
         else if ((length $ largestList $ sameRank hand) == 4) then (3, largestList $ sameRank hand) 
         -- 4. full house  
