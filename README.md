@@ -8,6 +8,10 @@ Texas Holdem Poker written in Haskell
 ### Tie Breaking
 
 ## How to Run
+```
+> :load Tester.hs
+runTests
+```
 
 ## Acknowledgments
 This project was assigned by Professor Ufkes and created for CPS506 - Comparative Programming Languages W2021
