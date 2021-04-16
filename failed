@@ -1,0 +1,65 @@
+Test #2033 DISCREPANCY: [14,35,26,46,31,32,33,30,34]
+  You returned:   ["4H","5H","6H","7H","8H"]
+  Should contain: ["5H","6H","7H","8H","9H"]
+  4 of 5 cards correct
+Test #3326 DISCREPANCY: [51,43,17,22,46,42,5,44,45]
+  You returned:   ["12S","3S","5S","6S","7S"]
+  Should contain: ["3S","4S","5S","6S","7S"]
+  4 of 5 cards correct
+Test #8817 DISCREPANCY: [11,13,50,42,26,16,28,24,3]
+  You returned:   ["13C","13D","3C","3D","3S"]
+  Should contain: ["11C","11D","11S","3C","3D"]
+  3 of 5 cards correct
+Test #9379 DISCREPANCY: [16,45,26,2,8,5,4,3,1]
+  You returned:   ["1C","3C","4C","5C","8C"]
+  Should contain: ["1C","2C","3C","4C","5C"]
+  4 of 5 cards correct
+Test #20988 DISCREPANCY: [44,14,19,32,43,47,45,41,42]
+  You returned:   ["3S","4S","5S","6S","8S"]
+  Should contain: ["2S","3S","4S","5S","6S"]
+  4 of 5 cards correct
+Test #32562 DISCREPANCY: [37,20,49,46,47,44,48,45,26]
+  You returned:   ["10S","5S","6S","8S","9S"]
+  Should contain: ["5S","6S","7S","8S","9S"]
+  4 of 5 cards correct
+Test #39821 DISCREPANCY: [5,49,51,10,44,25,20,18,36]
+  You returned:   ["12D","12S","5C","5D","5S"]
+  Should contain: ["10C","10H","10S","5D","5S"]
+  3 of 5 cards correct
+Test #47339 DISCREPANCY: [26,16,47,9,35,8,3,34,42]
+  You returned:   ["3C","3D","3S","9C","9H"]
+  Should contain: ["3C","3S","8C","8H","8S"]
+  3 of 5 cards correct
+Test #54037 DISCREPANCY: [5,31,12,37,45,3,1,2,4]
+  You returned:   ["12C","1C","3C","4C","5C"]
+  Should contain: ["1C","2C","3C","4C","5C"]
+  4 of 5 cards correct
+Test #57337 DISCREPANCY: [22,26,36,31,39,44,23,10,18]
+  You returned:   ["13D","13H","5D","5H","5S"]
+  Should contain: ["10C","10D","10H","5D","5S"]
+  3 of 5 cards correct
+Test #58356 DISCREPANCY: [6,13,44,29,46,9,8,10,7]
+  You returned:   ["10C","13C","7C","8C","9C"]
+  Should contain: ["10C","6C","7C","8C","9C"]
+  4 of 5 cards correct
+Test #59903 DISCREPANCY: [31,9,27,48,1,18,30,44,35]
+  You returned:   ["1C","1H","5D","5H","5S"]
+  Should contain: ["5D","5S","9C","9H","9S"]
+  3 of 5 cards correct
+Test #64756 DISCREPANCY: [10,50,23,12,29,42,11,3,36]
+  You returned:   ["11C","11S","3C","3H","3S"]
+  Should contain: ["10C","10D","10H","3H","3S"]
+  3 of 5 cards correct
+Test #84462 DISCREPANCY: [12,30,3,44,16,29,31,18,51]
+  You returned:   ["12C","12S","3C","3D","3H"]
+  Should contain: ["3D","3H","5D","5H","5S"]
+  3 of 5 cards correct
+Test #88172 DISCREPANCY: [16,52,9,39,48,18,31,22,5]
+  You returned:   ["13H","13S","5C","5D","5H"]
+  Should contain: ["5D","5H","9C","9D","9S"]
+  3 of 5 cards correct
+Test #95582 DISCREPANCY: [1,39,15,46,28,33,7,2,27]
+  You returned:   ["1C","1H","2C","2D","2H"]
+  Should contain: ["2C","2H","7C","7H","7S"]
+  3 of 5 cards correct
+99995.0/100000 | 100.0%
